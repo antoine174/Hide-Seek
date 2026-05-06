@@ -59,9 +59,22 @@ def calculate_payoff_matrix_2d(world_matrix: list) -> np.ndarray:
                 else: # Easy
                     payoff_matrix[s_idx, h_idx] = 2
             else:
-                # Seeker misses Hider. Hider survives and gets a base score.
-                base_hider_score = 10
+                # Seeker misses Hider. Hider survives and score depends on the risk they took.
+                hider_place_type = world_matrix[h_r][h_c]
+                
+                # High risk (Easy for Seeker) = High Reward for Hider
+                if hider_place_type == "Easy":
+                    base_hider_score = 10
+                # Medium risk = Medium Reward
+                elif hider_place_type == "Neutral":
+                    base_hider_score = 5
+                # Low risk (Hard for Seeker) = Low Reward for Hider
+                else: 
+                    base_hider_score = 2
+                    
+                # Apply the proximity multiplier (Bonus 4.1)
                 hider_score = apply_proximity_bonus_2d(h_r, h_c, s_r, s_c, base_hider_score)
+                
                 # Zero-sum game: Seeker score = -Hider score
                 payoff_matrix[s_idx, h_idx] = -hider_score
                 
