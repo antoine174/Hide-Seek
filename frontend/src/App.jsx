@@ -17,6 +17,9 @@ function App() {
   const [humanScore, setHumanScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
   
+  const [humanWins, setHumanWins] = useState(0);
+  const [computerWins, setComputerWins] = useState(0);
+  
   const [humanMove, setHumanMove] = useState(null);
   const [computerMove, setComputerMove] = useState(null);
   
@@ -35,6 +38,8 @@ function App() {
       setComputerProbs(res.data.computer_probs);
       setHumanScore(0);
       setComputerScore(0);
+      setHumanWins(0);
+      setComputerWins(0);
       setHumanMove(null);
       setComputerMove(null);
       setSimulationStats(null);
@@ -59,6 +64,13 @@ function App() {
       setComputerMove(res.data.computer_move);
       setHumanScore(prev => prev + res.data.human_score_delta);
       setComputerScore(prev => prev + res.data.computer_score_delta);
+      
+      if (res.data.human_score_delta > res.data.computer_score_delta) {
+        setHumanWins(prev => prev + 1);
+      } else if (res.data.computer_score_delta > res.data.human_score_delta) {
+        setComputerWins(prev => prev + 1);
+      }
+
       setComputerProbs(res.data.computer_probs);
       setSimulationStats(null); 
     } catch (err) {
@@ -220,6 +232,8 @@ function App() {
           <Dashboard 
             humanScore={humanScore}
             computerScore={computerScore}
+            humanWins={humanWins}
+            computerWins={computerWins}
             probabilities={computerProbs}
             onReset={() => {
               // Quick reset with same config
@@ -233,6 +247,8 @@ function App() {
                 setComputerProbs(res.data.computer_probs);
                 setHumanScore(0);
                 setComputerScore(0);
+                setHumanWins(0);
+                setComputerWins(0);
                 setHumanMove(null);
                 setComputerMove(null);
                 setSimulationStats(null);

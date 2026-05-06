@@ -4,6 +4,8 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 
 const Dashboard = ({ 
   humanScore, 
   computerScore, 
+  humanWins,
+  computerWins,
   probabilities, 
   onReset, 
   onSimulate, 
@@ -27,11 +29,13 @@ const Dashboard = ({
         <div className="bg-slate-900 p-4 rounded-lg border border-slate-700 text-center shadow-inner relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-blue-500 opacity-50"></div>
           <h3 className="text-sm text-slate-400 font-semibold mb-1 uppercase tracking-wider">You ({hRole})</h3>
+          <p className="text-xs font-medium text-slate-300 mb-1">Wins: <span className="text-emerald-400 font-bold">{humanWins}</span></p>
           <p className="text-3xl font-bold text-blue-400">{humanScore.toFixed(1)}</p>
         </div>
         <div className="bg-slate-900 p-4 rounded-lg border border-slate-700 text-center shadow-inner relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-red-500 opacity-50"></div>
           <h3 className="text-sm text-slate-400 font-semibold mb-1 uppercase tracking-wider">AI ({compRole})</h3>
+          <p className="text-xs font-medium text-slate-300 mb-1">Wins: <span className="text-emerald-400 font-bold">{computerWins}</span></p>
           <p className="text-3xl font-bold text-red-400">{computerScore.toFixed(1)}</p>
         </div>
       </div>
