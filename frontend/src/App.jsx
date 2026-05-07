@@ -158,9 +158,9 @@ function App() {
                 <label className="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest text-center">Columns</label>
                 <input 
                   type="number" 
-                  min="2" max="12"
+                  min="1" max="12"
                   value={cols}
-                  onChange={(e) => setCols(Math.max(2, parseInt(e.target.value) || 2))}
+                  onChange={(e) => setCols(Math.max(1, parseInt(e.target.value) || 1))}
                   className="w-full bg-slate-900/80 border border-slate-600 rounded-xl px-4 py-2 text-xl font-bold focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-center text-white"
                 />
               </div>

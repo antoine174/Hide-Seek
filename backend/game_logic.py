@@ -89,18 +89,14 @@ def solve_simplex(payoff_matrix: np.ndarray, is_seeker: bool) -> list:
     num_places = payoff_matrix.shape[0]
     
     if is_seeker:
-        # Seeker wants to maximize the minimum expected payoff.
-        # In linprog (which minimizes): Minimize -V
         c = np.zeros(num_places + 1)
         c[0] = -1 
         
-        # A_ub * x <= b_ub: V - \sum p_i * A_{ij} <= 0 for all j
         A_ub = np.zeros((num_places, num_places + 1))
         A_ub[:, 0] = 1
         A_ub[:, 1:] = -payoff_matrix.T
         b_ub = np.zeros(num_places)
         
-        # A_eq * x == b_eq: \sum p_i = 1
         A_eq = np.zeros((1, num_places + 1))
         A_eq[0, 1:] = 1
         b_eq = np.array([1])
@@ -108,18 +104,14 @@ def solve_simplex(payoff_matrix: np.ndarray, is_seeker: bool) -> list:
         bounds = [(None, None)] + [(0, 1)] * num_places
         
     else:
-        # Hider wants to minimize the maximum expected payoff to the seeker.
-        # Minimize V
         c = np.zeros(num_places + 1)
         c[0] = 1
         
-        # A_ub * x <= b_ub: \sum q_j * A_{ij} - V <= 0 for all i
         A_ub = np.zeros((num_places, num_places + 1))
         A_ub[:, 0] = -1
         A_ub[:, 1:] = payoff_matrix
         b_ub = np.zeros(num_places)
         
-        # A_eq * x == b_eq: \sum q_j = 1
         A_eq = np.zeros((1, num_places + 1))
         A_eq[0, 1:] = 1
         b_eq = np.array([1])

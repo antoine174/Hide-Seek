@@ -2,7 +2,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import game_logic
 import schemas
-
+from pydantic import BaseModel
+from typing import List
+import numpy as np
 app = FastAPI()
 
 app.add_middleware(
@@ -118,3 +120,21 @@ def simulate_game(req: schemas.SimulationRequest):
         computer_wins=comp_wins,
         draws=draws
     )
+
+class SimplexTestRequest(BaseModel):
+    payoff_matrix: List[List[float]]
+    is_seeker: bool
+
+@app.post("/api/test-simplex")
+def test_simplex_endpoint(req: SimplexTestRequest):
+    # Convert the Python list of lists into a Numpy array
+    matrix_np = np.array(req.payoff_matrix)
+    
+    # Run your Simplex algorithm
+    probs = game_logic.solve_simplex(matrix_np, req.is_seeker)
+    
+    return {
+        "status": "success",
+        "is_seeker": req.is_seeker,
+        "probabilities": probs
+    }
